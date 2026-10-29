@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RoofSquares Storm &amp; Insurance Claim Kit</title>
+<style>
+:root{--ink:#1c2530;--mut:#5b6b7c;--line:#d8dee6;--bg:#f4f6f8;--card:#fff;--acc:#b3541e;--acc2:#205d8a;--ok:#1e7a3c;--warn:#b3541e;--bad:#b02a2a;--chip:#eef2f6}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.45}
+header.top{background:#22303f;color:#fff;padding:12px 16px;display:flex;flex-wrap:wrap;gap:8px;align-items:baseline}
+header.top h1{font-size:19px;margin:0}
+header.top .co{font-size:14px;opacity:.85}
+header.top .tag{margin-left:auto;font-size:12px;background:#31465c;padding:3px 9px;border-radius:20px}
+nav.tabs{display:flex;flex-wrap:wrap;gap:4px;background:#2e4156;padding:6px 10px;position:sticky;top:0;z-index:5}
+nav.tabs button{background:transparent;border:0;color:#cfe0ee;font-size:14px;padding:8px 12px;border-radius:6px;cursor:pointer;min-height:40px}
+nav.tabs button.on{background:#fff;color:#22303f;font-weight:600}
+main{max-width:1080px;margin:0 auto;padding:16px 12px 60px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin-bottom:14px}
+.card h2{margin:0 0 10px;font-size:17px}
+.card h3{margin:16px 0 8px;font-size:15px}
+label{display:block;font-size:13px;color:var(--mut);margin:8px 0 3px}
+input,select,textarea{width:100%;padding:9px;border:1px solid var(--line);border-radius:6px;font-size:15px;font-family:inherit;background:#fff;color:var(--ink)}
+textarea{min-height:80px;resize:vertical}
+input[type=checkbox]{width:20px;height:20px;padding:0;vertical-align:middle}
+.row{display:flex;gap:12px;flex-wrap:wrap}.row>div{flex:1 1 200px}
+.btn{background:var(--acc);color:#fff;border:0;border-radius:6px;padding:10px 16px;font-size:15px;cursor:pointer;min-height:44px}
+.btn.sec{background:var(--acc2)}
+.btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.btn.sm{padding:6px 10px;font-size:13px;min-height:36px}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.chip{display:inline-block;background:var(--chip);border-radius:20px;padding:2px 10px;font-size:12px;margin:2px 2px 2px 0}
+.stage{font-weight:600;color:var(--acc2)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{border-bottom:1px solid var(--line);padding:7px 6px;text-align:left;vertical-align:top}
+th{color:var(--mut);font-weight:600;font-size:12.5px;text-transform:uppercase;letter-spacing:.03em}
+.money{font-variant-numeric:tabular-nums;white-space:nowrap}
+.big{font-size:20px;font-weight:700}
+.kpis{display:flex;gap:12px;flex-wrap:wrap}.kpi{flex:1 1 150px;background:var(--chip);border-radius:8px;padding:10px 12px}
+.kpi .v{font-size:19px;font-weight:700}
+.kpi .l{font-size:12px;color:var(--mut)}
+.sev-none{color:var(--mut)}.sev-minor{color:#8a6d00}.sev-moderate{color:var(--warn);font-weight:600}.sev-severe{color:var(--bad);font-weight:700}
+.notice{background:#fdf3e7;border:1px solid #e8c9a0;border-radius:8px;padding:10px 12px;font-size:13.5px;margin:10px 0}
+.fine{font-size:12.5px;color:var(--mut)}
+.jobcard{border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:10px;background:#fff;cursor:pointer}
+.jobcard:hover{border-color:var(--acc2)}
+.findings label{display:inline-flex;align-items:center;gap:6px;margin:2px 10px 2px 0;font-size:14px;color:var(--ink)}
+.findings input{width:18px;height:18px}
+.pipe{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin:6px 0}
+.pipe .st{padding:4px 9px;border-radius:16px;background:var(--chip);font-size:12.5px}
+.pipe .st.done{background:#dcefe2;color:var(--ok);font-weight:600}
+.pipe .st.cur{background:var(--acc2);color:#fff;font-weight:600}
+.pipe .arw{color:var(--mut)}
+.msg{padding:10px 12px;border-radius:8px;margin:10px 0;display:none}
+.msg.ok{display:block;background:#e5f4ea;border:1px solid #a8d5b5}
+.msg.err{display:block;background:#fbe7e7;border:1px solid #e0a3a3}
+#printArea{display:none}
+@media print{
+  body>*{display:none!important}
+  #printArea{display:block!important;color:#000;background:#fff;font-size:12.5px}
+  #printArea h1{font-size:19px;margin:0 0 2px}
+  #printArea h2{font-size:15px;margin:14px 0 6px;border-bottom:2px solid #333;padding-bottom:3px}
+  #printArea table{font-size:12px}
+  #printArea .sig{margin-top:34px;display:flex;gap:40px}
+  #printArea .sig div{flex:1;border-top:1px solid #000;padding-top:4px;font-size:11.5px}
+  #printArea .ph{white-space:pre-wrap}
+}
+@media (max-width:560px){ header.top .tag{display:none} th,td{padding:6px 4px} }
+</style>
+</head>
+<body>
+<header class="top">
+  <h1>Storm &amp; Insurance Claim Kit</h1>
+  <span class="co" id="coName"></span>
+  <span class="tag">Companion to RoofSquares · works offline</span>
+</header>
+<nav class="tabs" id="tabs">
+  <button data-tab="jobs" class="on">Job Files</button>
+  <button data-tab="inspect">Inspection</button>
+  <button data-tab="claim">Claim Packet</button>
+  <button data-tab="home">Homeowner Pack</button>
+  <button data-tab="track">Claim Tracker</button>
+  <button data-tab="settings">Settings</button>
+  <button data-tab="help">Help</button>
+</nav>
+<main>
+  <div id="msg" class="msg"></div>
+
+  <!-- ============ JOB FILES ============ -->
+  <section id="view-jobs">
+    <div class="card">
+      <h2>Job Files</h2>
+      <div class="kpis" id="jobKpis"></div>
+      <div class="row" style="margin-top:12px">
+        <div style="flex:2 1 260px"><label>Search job files</label><input id="jobSearch" placeholder="Homeowner, address, carrier, claim #…"></div>
+        <div style="flex:0 0 auto;align-self:end"><button class="btn" id="newJobBtn">+ New Job File</button></div>
+        <div style="flex:0 0 auto;align-self:end"><button class="btn ghost" id="clearDemoBtn">Clear demo data</button></div>
+      </div>
+    </div>
+    <div id="jobList"></div>
+  </section>
+
+  <!-- ============ INSPECTION ============ -->
+  <section id="view-inspect" hidden>
+    <div class="card">
+      <h2>Storm Damage Inspection</h2>
+      <div id="inspJobHead"></div>
+      <div class="row">
+        <div><label>Homeowner name</label><input id="f_homeowner"></div>
+        <div><label>Property address</label><input id="f_address"></div>
+      </div>
+      <div class="row">
+        <div><label>Homeowner phone</label><input id="f_hphone"></div>
+        <div><label>Homeowner email</label><input id="f_hemail"></div>
+      </div>
+      <div class="row">
+        <div><label>Roof material</label>
+          <select id="f_roofType"><option>Asphalt shingle — architectural</option><option>Asphalt shingle — 3-tab</option><option>Metal — standing seam</option><option>Metal — screw-down</option><option>Tile</option><option>Cedar shake</option><option>Flat / low-slope (TPO, EPDM, mod-bit)</option><option>Other</option></select></div>
+        <div><label>Pitch</label><input id="f_pitch" placeholder="e.g. 7/12"></div>
+        <div><label>Stories</label><input inputmode="decimal" id="f_stories" type="number" min="0" step="1"></div>
+        <div><label>Approx. roof age (yrs)</label><input inputmode="decimal" id="f_roofAge" type="number" min="0" step="1"></div>
+        <div><label>Size (squares, from RoofSquares)</label><input inputmode="decimal" id="f_squares" type="number" min="0" step="0.1"></div>
+      </div>
+      <div class="row">
+        <div><label>Date of loss</label><input id="f_lossDate" type="date"></div>
+        <div><label>Storm type</label>
+          <select id="f_stormType"><option>Wind</option><option>Hail</option><option>Wind + hail</option><option>Tornado</option><option>Hurricane</option><option>Fallen tree / debris</option><option>Other</option></select></div>
+        <div><label>Inspection date</label><input id="f_inspDate" type="date"></div>
+        <div><label>Inspector</label><input id="f_inspector"></div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Damage checklist by roof area</h2>
+      <p class="fine">For each area: pick a severity, tick what you found, and note the specifics (slope, count, location). Everything here feeds the inspection report and the claim scope summary.</p>
+      <div id="areaList"></div>
+      <label>General inspection notes</label>
+      <textarea id="f_generalNotes" placeholder="Access notes, overall condition, anything that doesn't fit an area above…"></textarea>
+    </div>
+    <div class="card">
+      <h2>Photo-reference log</h2>
+      <p class="fine">This kit stores photo <em>references</em>, not the photos themselves — record the file name from your phone/camera roll (e.g. IMG_2041) plus what it shows, so every printed document ties back to the real photo.</p>
+      <div id="photoList"></div>
+      <button class="btn sec sm" id="addPhotoBtn" style="margin-top:8px">+ Add photo reference</button>
+      <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn" id="printInspBtn">Print inspection report</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CLAIM PACKET ============ -->
+  <section id="view-claim" hidden>
+    <div class="card">
+      <h2>Insurance Claim Packet</h2>
+      <div id="claimJobHead"></div>
+      <div class="row">
+        <div><label>Insurance carrier</label><input id="c_carrier"></div>
+        <div><label>Claim number</label><input id="c_claimNo"></div>
+        <div><label>Policy number</label><input id="c_policyNo"></div>
+      </div>
+      <div class="row">
+        <div><label>Adjuster name</label><input id="c_adjuster"></div>
+        <div><label>Adjuster phone</label><input id="c_adjPhone"></div>
+        <div><label>Adjuster email</label><input id="c_adjEmail"></div>
+      </div>
+      <div class="row">
+        <div><label>Date claim filed</label><input id="c_dateFiled" type="date"></div>
+        <div><label>Adjuster meeting date</label><input id="c_meetingDate" type="date"></div>
+        <div><label>Carrier decision</label>
+          <select id="c_decision"><option value="pending">Pending</option><option value="approved">Approved</option><option value="partial">Partially approved</option><option value="denied">Denied</option></select></div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Scope summary <span class="fine">(built from your inspection)</span></h2>
+      <div id="scopeSummary" style="white-space:pre-wrap"></div>
+      <label>Additional scope notes (supplement items, code items, interior work…)</label>
+      <textarea id="c_extraScope"></textarea>
+    </div>
+    <div class="card">
+      <h2>Document checklist — what's gone to the carrier</h2>
+      <div id="docList"></div>
+      <div class="row" style="margin-top:8px">
+        <div><label>Add a document</label><input id="newDocName" placeholder="e.g. Drone photos, Engineer report"></div>
+        <div style="flex:0 0 auto;align-self:end"><button class="btn sec sm" id="addDocBtn">+ Add</button></div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Claim summary letter</h2>
+      <p class="fine">A professional documentation letter — it summarizes what was found and what is enclosed. It makes no demands and no legal threats; edit it freely before printing. <strong>It is not legal advice.</strong></p>
+      <textarea id="letterBody" style="min-height:320px"></textarea>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+        <button class="btn ghost sm" id="regenLetterBtn">Regenerate from current job data</button>
+        <button class="btn" id="printLetterBtn">Print letter</button>
+        <button class="btn sec" id="printPacketBtn">Print claim summary</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOMEOWNER PACK ============ -->
+  <section id="view-home" hidden>
+    <div class="card">
+      <h2>Homeowner Communication Pack</h2>
+      <div id="homeJobHead"></div>
+      <p class="fine">Pre-written, plain-English, and fully editable. Print them as-is or make them yours — your company name, phone, and license from Settings print at the top of every page.</p>
+    </div>
+    <div class="card">
+      <h3>1 · Post-storm door hanger</h3>
+      <textarea id="h_door"></textarea>
+      <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn sm" id="printDoorBtn">Print door hanger</button><button class="btn ghost sm" data-reset="door">Reset text</button></div>
+    </div>
+    <div class="card">
+      <h3>2 · “What to expect” one-pager</h3>
+      <textarea id="h_expect"></textarea>
+      <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn sm" id="printExpectBtn">Print one-pager</button><button class="btn ghost sm" data-reset="expect">Reset text</button></div>
+    </div>
+    <div class="card">
+      <h3>3 · Temporary repair (tarping) agreement</h3>
+      <div class="row">
+        <div><label>Tarped area (sq ft)</label><input inputmode="decimal" id="t_area" type="number" min="0" step="1"></div>
+        <div><label>Rate ($ per sq ft)</label><input inputmode="decimal" id="t_rate" type="number" min="0" step="0.01"></div>
+        <div><label>Minimum charge ($)</label><input inputmode="decimal" id="t_min" type="number" min="0" step="1"></div>
+        <div><label>Date of temporary repair</label><input id="t_date" type="date"></div>
+      </div>
+      <p>Tarping total: <span class="big money" id="t_total">$0.00</span> <span class="fine" id="t_note"></span></p>
+      <label>Scope of temporary repair</label>
+      <textarea id="t_scope"></textarea>
+      <label>Agreement terms</label>
+      <textarea id="h_tarpTerms"></textarea>
+      <div style="margin-top:8px"><button class="btn" id="printTarpBtn">Print tarping agreement</button></div>
+    </div>
+  </section>
+
+  <!-- ============ CLAIM TRACKER ============ -->
+  <section id="view-track" hidden>
+    <div class="card">
+      <h2>Claim Status &amp; Money Tracker</h2>
+      <div id="trackJobHead"></div>
+      <h3>Status pipeline</h3>
+      <div class="pipe" id="pipeView"></div>
+      <div class="row">
+        <div><label>Move this job to stage</label><select id="stageSel"></select></div>
+        <div><label>Stage date</label><input id="stageDate" type="date"></div>
+        <div style="flex:0 0 auto;align-self:end"><button class="btn sec sm" id="setStageBtn">Set stage</button></div>
+      </div>
+      <div id="stageHistory" class="fine"></div>
+    </div>
+    <div class="card">
+      <h2>The money — deductible &amp; depreciation, in plain numbers</h2>
+      <p class="fine">Most replacement-cost policies pay in two parts: an actual-cash-value (ACV) payment up front, and the <strong>recoverable depreciation</strong> held back until the work is done and documented. This tracker keeps the holdback visible so it doesn't get forgotten — forgotten depreciation is money the homeowner (and the job) never sees.</p>
+      <div class="row">
+        <div><label>Approved claim value — RCV ($)</label><input inputmode="decimal" id="m_rcv" type="number" min="0" step="0.01"></div>
+        <div><label>Homeowner deductible ($)</label><input inputmode="decimal" id="m_deductible" type="number" min="0" step="0.01"></div>
+        <div><label>ACV payment received ($)</label><input inputmode="decimal" id="m_acv" type="number" min="0" step="0.01"></div>
+      </div>
+      <div class="row">
+        <div><label>Depreciation released so far ($)</label><input inputmode="decimal" id="m_released" type="number" min="0" step="0.01"></div>
+        <div><label>Date of last release</label><input id="m_releasedDate" type="date"></div>
+        <div><label>Supplement requested ($)</label><input inputmode="decimal" id="m_supp" type="number" min="0" step="0.01"></div>
+        <div><label>Supplement status</label>
+          <select id="m_suppStatus"><option value="none">None</option><option value="pending">Requested — pending</option><option value="approved">Approved</option><option value="denied">Denied</option></select></div>
+      </div>
+      <div class="kpis" id="moneyKpis" style="margin-top:12px"></div>
+      <p class="fine" style="margin-top:10px">How these numbers work: depreciation held back = RCV − deductible − ACV received. Still recoverable = held back − already released. Total the carrier pays on a completed, documented job = RCV − deductible. These are planning figures from the numbers you enter — the carrier's own estimate and policy control the actual payments.</p>
+      <div style="margin-top:10px"><button class="btn" id="printTrackBtn">Print claim &amp; money summary</button></div>
+    </div>
+  </section>
+
+  <!-- ============ SETTINGS ============ -->
+  <section id="view-settings" hidden>
+    <div class="card">
+      <h2>Company Settings</h2>
+      <div class="row">
+        <div><label>Company name</label><input id="s_company"></div>
+        <div><label>Phone</label><input id="s_phone"></div>
+        <div><label>Email</label><input id="s_email"></div>
+      </div>
+      <div class="row">
+        <div><label>Address</label><input id="s_address"></div>
+        <div><label>License #</label><input id="s_license"></div>
+        <div><label>Default tarping rate ($/sq ft)</label><input inputmode="decimal" id="s_tarpRate" type="number" min="0" step="0.01"></div>
+        <div><label>Default tarping minimum ($)</label><input inputmode="decimal" id="s_tarpMin" type="number" min="0" step="1"></div>
+      </div>
+      <p class="fine">Company info prints on the inspection report, claim summary, letter, and homeowner documents.</p>
+    </div>
+    <div class="card">
+      <h2>Backup</h2>
+      <p class="fine">All job files live in this browser on this device. Export a backup before switching devices or clearing browser data.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn sec" id="exportBtn">Export backup (JSON)</button>
+        <button class="btn ghost" id="importBtn">Import backup</button>
+        <input type="file" id="importFile" accept=".json,application/json" hidden>
+      </div>
+      <label>…or paste a backup here</label>
+      <textarea id="importText" placeholder="Paste backup JSON, then tap Import backup"></textarea>
+      <div style="margin-top:14px"><button class="btn ghost" id="eraseBtn" style="color:var(--bad)">Erase ALL data (including settings)</button></div>
+    </div>
+  <div id="legalSection"></div>
+</section>
+
+  <!-- ============ HELP ============ -->
+  <section id="view-help" hidden>
+    <div class="card">
+      <h2>Help — how this kit works</h2>
+      <h3>The workflow</h3>
+      <p>1. After a storm, open a <strong>Job File</strong> and complete the <strong>Inspection</strong> on site — severity, findings, notes, and photo references while you're on the roof.<br>
+      2. In the <strong>Claim Packet</strong>, add the carrier and claim details, tick off each document as you send it, and print or adapt the claim summary letter.<br>
+      3. Leave the <strong>Homeowner Pack</strong> behind: the door hanger for the street, the what-to-expect sheet for the customer, and a signed tarping agreement before any temporary repair.<br>
+      4. Work the <strong>Claim Tracker</strong> until the job is closed — stage by stage, with the depreciation holdback in plain sight the whole time. Pair it with your <strong>RoofSquares</strong> estimate for the repair/replacement numbers themselves.</p>
+      <h3>Photo references, not photos</h3>
+      <p>Like the rest of this product line, the kit stores photo <em>file names and descriptions</em>, not image files. Keep the originals in your camera roll or cloud drive, backed up — the log tells you (and the carrier) exactly which photo shows what.</p>
+      <h3>Depreciation, plainly</h3>
+      <p>On a replacement-cost (RCV) policy the carrier usually pays ACV (today's depreciated value) first, minus the deductible, and holds the depreciation until the work is complete and documented (final invoice + photos). If nobody asks for the release, it typically expires unclaimed — commonly within a policy deadline. This kit's tracker exists so that never happens on your jobs. Deadlines and rules are set by the homeowner's own policy — check theirs.</p>
+      <h3>Disclaimers — read these</h3>
+      <p><strong>This kit is a documentation and organization aid. It is not legal advice, not insurance advice, and not a public-adjusting service.</strong> The letter and agreement templates are general business documents — have a local attorney review anything you rely on, and never sign documents on a homeowner's behalf or represent yourself as an adjuster (in many states that's licensed work, and in some states contractors are restricted in how they may negotiate claims — know your state's rules). The kit makes <strong>no promise about claim outcomes</strong>: it does not use Xactimate, does not estimate what a carrier will pay, and no template here can make a carrier approve anything. The money figures are arithmetic on the numbers you type in.</p>
+      <h3>Your data</h3>
+      <p>Everything is stored only in this browser on this device — no account, no upload, nothing leaves the device. Export backups from Settings regularly; clearing browser site data erases the kit's storage.</p>
+    </div>
+  </section>
+</main>
+<div id="printArea"></div>
+
+<script>
+"use strict";
+/* ================= RoofSquares Storm & Insurance Claim Kit ================= */
+var STORE_KEY = "roofstormkit_v1";
+
+var AREAS = [
+  {key:"shingles", name:"Field of Roof — Shingles", findings:["Missing shingles","Creased / wind-lifted tabs","Hail hits / bruising","Granule loss","Exposed fasteners / nails","Slid or curled shingles","Damage on multiple slopes"]},
+  {key:"flashing", name:"Flashing & Penetrations", findings:["Step flashing damaged","Counter-flashing loose / missing","Valley metal damaged","Pipe boots cracked","Chimney flashing failed","Drip edge bent / missing"]},
+  {key:"gutters", name:"Gutters & Downspouts", findings:["Dents from hail","Pulled away from fascia","Downspouts crushed","Seams leaking","Overflow staining"]},
+  {key:"vents", name:"Vents & Roof Accessories", findings:["Turbine / whirlybird damaged","Ridge vent lifted","Box vents dented","Exhaust caps missing","Satellite / antenna damage"]},
+  {key:"decking", name:"Decking & Structure", findings:["Soft / spongy spots","Sagging decking","Damaged fascia or soffit","Fallen-limb puncture","Attic daylight visible"]},
+  {key:"interior", name:"Interior Leaks & Damage", findings:["Ceiling stains","Active dripping","Wet insulation in attic","Drywall damage","Mold signs — refer to specialist"]}
+];
+var STAGES = ["Inspected","Claim Filed","Adjuster Meeting","Decision Received","Supplement","Work Complete","Closed"];
+var DEFAULT_DOCS = ["Signed work authorization / contract","Inspection report (this kit)","Photo documentation","Repair estimate (RoofSquares)","Tarping invoice (if tarped)","Material invoices","Before / during / after photos","Certificate of completion","Final invoice","Depreciation release request"];
+
+function num(v){ var n = parseFloat(v); return isFinite(n) ? n : 0; }
+function money(n){ n = num(n); var s = (Math.round(n*100)/100).toLocaleString("en-US",{minimumFractionDigits:2, maximumFractionDigits:2}); return "$" + s; }
+function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+function uid(){ return "j" + Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+function todayStr(){ var d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+
+/* ---- Pure money math (tested) ---- */
+function moneyMath(m){
+  m = m || {};
+  var rcv = Math.max(0, num(m.rcv)), ded = Math.max(0, num(m.deductible)), acv = Math.max(0, num(m.acv)), rel = Math.max(0, num(m.released));
+  var heldBack = Math.max(0, rcv - ded - acv);
+  var releasedClamped = Math.min(rel, heldBack + rel); /* released shown as entered */
+  var remaining = Math.max(0, heldBack - rel);
+  var carrierTotal = Math.max(0, rcv - ded);
+  var paidSoFar = acv + rel;
+  var stillOwed = Math.max(0, carrierTotal - paidSoFar);
+  return { rcv:rcv, deductible:ded, acv:acv, released:rel, heldBack:heldBack, remaining:remaining, carrierTotal:carrierTotal, paidSoFar:paidSoFar, stillOwed:stillOwed };
+}
+function tarpTotal(t){
+  t = t || {};
+  var area = Math.max(0, num(t.area)), rate = Math.max(0, num(t.rate)), min = Math.max(0, num(t.min));
+  if (area <= 0) return 0;
+  return Math.max(area * rate, min);
+}
+/* ---- Scope summary built from inspection ---- */
+function buildScopeSummary(job){
+  var lines = [];
+  AREAS.forEach(function(a){
+    var d = (job.inspection.areas || {})[a.key] || {};
+    if (d.severity && d.severity !== "none"){
+      var f = (d.findings || []).join(", ");
+      lines.push("• " + a.name + " — " + d.severity.toUpperCase() + (f ? " — findings: " + f : "") + (d.notes ? " — " + d.notes : ""));
+    }
+  });
+  var photoCount = (job.inspection.photos || []).length;
+  var head = "Storm damage inspection — " + (job.property.address || "[address]") + "\nDate of loss: " + (job.loss.dateOfLoss || "—") + " (" + (job.loss.stormType || "storm") + ") · Inspected: " + (job.inspection.date || "—") + " by " + (job.inspection.inspector || "—");
+  var body = lines.length ? lines.join("\n") : "• No damage areas recorded yet — complete the inspection checklist.";
+  return head + "\n\n" + body + "\n\nPhoto references logged: " + photoCount + (job.inspection.generalNotes ? "\nGeneral notes: " + job.inspection.generalNotes : "");
+}
+function letterTemplate(job, settings){
+  var scope = buildScopeSummary(job);
+  var sentDocs = (job.docs || []).filter(function(d){ return d.sent; }).map(function(d){ return "  – " + d.name; });
+  var c = settings || {};
+  return [
+    (c.company || "[Your company]"),
+    (c.address || "") + (c.phone ? " · " + c.phone : "") + (c.email ? " · " + c.email : ""),
+    "",
+    todayStr(),
+    "",
+    job.claim.carrier || "[Insurance carrier]",
+    "Attn: " + (job.claim.adjuster || "[Adjuster]"),
+    "",
+    "Re: Claim documentation — " + (job.property.homeowner || "[Homeowner]"),
+    "Property: " + (job.property.address || "[Address]"),
+    "Claim #: " + (job.claim.claimNo || "—") + "   Policy #: " + (job.claim.policyNo || "—"),
+    "Date of loss: " + (job.loss.dateOfLoss || "—"),
+    "",
+    "Dear " + (job.claim.adjuster || "Adjuster") + ",",
+    "",
+    "We are the roofing contractor engaged by the homeowner for the property above. Following the storm event on " + (job.loss.dateOfLoss || "the date noted") + ", we inspected the roof and documented the conditions summarized below. This letter and the enclosed records are provided so the claim file reflects the full documented condition of the property.",
+    "",
+    scope,
+    "",
+    "Enclosed with this letter:",
+    sentDocs.length ? sentDocs.join("\n") : "  – (see document checklist)",
+    "",
+    "We are available for a joint inspection or re-inspection at the adjuster's convenience, and we will provide any additional documentation the claim file requires. Thank you for your review.",
+    "",
+    "Sincerely,",
+    c.company || "[Your company]",
+    (c.phone || "") + (c.email ? " · " + c.email : ""),
+    "",
+    "—",
+    "This letter documents observed conditions and the records enclosed with it. It is a documentation summary prepared by the contractor; it is not legal advice and makes no representation about coverage or claim outcomes, which are determined solely by the carrier under the homeowner's policy."
+  ].join("\n");
+}
+function doorHangerDefault(job, settings){
+  var c = settings || {};
+  return "STORM DAMAGE IN YOUR NEIGHBORHOOD\n\nA recent storm (" + (job.loss.dateOfLoss || "date on file") + ") damaged roofs on this street — including work we are completing nearby at " + (job.property.address || "a neighboring home") + ".\n\nWind and hail damage is often invisible from the ground, and most policies give you a limited window to report it.\n\nWe offer a FREE, no-obligation roof inspection:\n• Full photo documentation of any damage found\n• A written summary you keep either way\n• Help understanding your options — no pressure, no obligation\n\n" + (c.company || "[Your company]") + (c.phone ? "\nCall or text: " + c.phone : "") + (c.license ? "\nLicensed: " + c.license : "") + "\n\nSorry we missed you — this hanger is our introduction, not a sales pitch.";
+}
+function expectDefault(job, settings){
+  var c = settings || {};
+  return "WHAT TO EXPECT — YOUR ROOF CLAIM, STEP BY STEP\nPrepared by " + (c.company || "[Your company]") + " for " + (job.property.homeowner || "you") + "\n\n1. INSPECTION (done " + (job.inspection.date || "—") + ")\nWe documented your roof area by area, with photos. You keep a copy of everything — the findings are yours.\n\n2. FILING THE CLAIM\nYou (the policyholder) open the claim with " + (job.claim.carrier || "your carrier") + " and receive a claim number. It takes about 15 minutes by phone or online.\n\n3. THE ADJUSTER'S VISIT\nThe carrier's adjuster inspects and writes their own estimate. We can be there to make sure every documented area gets looked at.\n\n4. THE DECISION\nThe carrier approves, partially approves, or denies. If approved, a first check (the ACV payment) is issued, minus your deductible of " + money(job.tracker.money.deductible) + ".\n\n5. THE WORK\nWe complete the approved scope. If hidden damage turns up mid-job, we document it and submit a supplement — that's normal and expected.\n\n6. THE FINAL PAYMENT\nWhen the work is done, the carrier releases the depreciation they held back (" + money(moneyMath(job.tracker.money).heldBack) + " on the current numbers). We handle the completion paperwork with you.\n\nWHAT IT COSTS YOU\nYour deductible is your only planned out-of-pocket cost on an approved claim. If the claim is denied, you owe us nothing for the inspection.\n\nQuestions any time: " + (c.phone || "[phone]") + (c.email ? " · " + c.email : "") + "\n\nNote: we are your contractor, not your insurer or a public adjuster. Coverage decisions belong to your carrier under your policy.";
+}
+function tarpTermsDefault(){
+  return "TEMPORARY REPAIR AGREEMENT — TERMS\n\n1. SCOPE. Contractor will install temporary weatherproofing (tarping) over the damaged area described above. This is a TEMPORARY measure to reduce further water intrusion; it is not a repair of the roof itself and carries no warranty beyond the installation visit.\n2. PRICE. The price above is for the tarping visit as scoped. If the damaged area proves materially larger on arrival, Contractor will notify Homeowner before proceeding with any additional area or charge.\n3. DURATION. Tarps degrade with sun and wind. Homeowner should pursue permanent repair promptly; Contractor is not responsible for tarp failure after 90 days or after subsequent storm events.\n4. ACCESS & SAFETY. Homeowner authorizes access to the roof for this work. Contractor will take reasonable care of landscaping and property.\n5. INSURANCE. Temporary-repair costs are commonly submitted to the homeowner's carrier as mitigation; whether they are reimbursed is the carrier's decision under the policy — Contractor makes no promise of reimbursement.\n6. PAYMENT. Due on completion unless other terms are agreed in writing.\n\nSample business language — have a local attorney review before relying on it. Not legal advice.";
+}
+
+/* ================= State ================= */
+function defaultJob(){
+  var j = {
+    id: uid(), demo:false, created: todayStr(),
+    property:{ homeowner:"", address:"", phone:"", email:"", roofType:"Asphalt shingle — architectural", pitch:"", stories:"", roofAge:"", squares:"" },
+    loss:{ dateOfLoss:"", stormType:"Wind + hail" },
+    inspection:{ date: todayStr(), inspector:"", areas:{}, photos:[], generalNotes:"" },
+    claim:{ carrier:"", claimNo:"", policyNo:"", adjuster:"", adjPhone:"", adjEmail:"", dateFiled:"", meetingDate:"", decision:"pending" },
+    docs: DEFAULT_DOCS.map(function(n){ return { id: uid(), name:n, sent:false, date:"", method:"", notes:"" }; }),
+    extraScope:"",
+    letter:"",
+    home:{ door:"", expect:"", tarpTerms:"", tarp:{ area:"", rate:"", min:"", date:"", scope:"" } },
+    tracker:{ stage:0, stageDates:{}, money:{ rcv:"", deductible:"", acv:"", released:"", releasedDate:"", supp:"", suppStatus:"none" } }
+  };
+  AREAS.forEach(function(a){ j.inspection.areas[a.key] = { severity:"none", findings:[], notes:"" }; });
+  return j;
+}
+function defaultState(){
+  return { settings:{ company:"", phone:"", email:"", address:"", license:"", tarpRate:1.25, tarpMin:250 },
+           jobs:[], currentJobId:"", seeded:false };
+}
+var state = defaultState();
+
+function save(){ try{ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }catch(e){} }
+function normalizeJob(j){
+  var d = defaultJob();
+  if (!j || typeof j !== "object") return d;
+  var out = d;
+  out.id = typeof j.id === "string" && j.id ? j.id : d.id;
+  out.demo = !!j.demo;
+  out.created = j.created || d.created;
+  ["property","loss","inspection","claim","home","tracker"].forEach(function(k){
+    if (j[k] && typeof j[k] === "object"){
+      Object.keys(out[k]).forEach(function(sub){
+        if (j[k][sub] !== undefined) out[k][sub] = j[k][sub];
+      });
+    }
+  });
+  if (Array.isArray(j.docs) && j.docs.length) out.docs = j.docs.filter(function(x){ return x && typeof x.name === "string"; }).map(function(x){ return { id: x.id || uid(), name:String(x.name), sent:!!x.sent, date:x.date||"", method:x.method||"", notes:x.notes||"" }; });
+  out.extraScope = typeof j.extraScope === "string" ? j.extraScope : "";
+  out.letter = typeof j.letter === "string" ? j.letter : "";
+  if (!out.inspection.areas || typeof out.inspection.areas !== "object") out.inspection.areas = d.inspection.areas;
+  AREAS.forEach(function(a){
+    var cur = out.inspection.areas[a.key];
+    if (!cur || typeof cur !== "object") out.inspection.areas[a.key] = { severity:"none", findings:[], notes:"" };
+    else { cur.severity = ["none","minor","moderate","severe"].indexOf(cur.severity) >= 0 ? cur.severity : "none"; cur.findings = Array.isArray(cur.findings) ? cur.findings.filter(function(f){ return typeof f === "string"; }) : []; cur.notes = typeof cur.notes === "string" ? cur.notes : ""; }
+  });
+  if (!Array.isArray(out.inspection.photos)) out.inspection.photos = [];
+  out.inspection.photos = out.inspection.photos.filter(function(p){ return p && typeof p === "object"; }).map(function(p){ return { id:p.id||uid(), file:String(p.file||""), area:String(p.area||""), desc:String(p.desc||""), date:p.date||"" }; });
+  if (!out.tracker.money || typeof out.tracker.money !== "object") out.tracker.money = d.tracker.money;
+  out.tracker.stage = Math.min(Math.max(0, parseInt(out.tracker.stage,10)||0), STAGES.length-1);
+  if (!out.tracker.stageDates || typeof out.tracker.stageDates !== "object") out.tracker.stageDates = {};
+  if (!out.home.tarp || typeof out.home.tarp !== "object") out.home.tarp = d.home.tarp;
+  return out;
+}
+function load(){
+  try{
+    var raw = localStorage.getItem(STORE_KEY);
+    if (!raw) return;
+    var parsed = JSON.parse(raw);
+    if (!parsed || typeof parsed !== "object") return;
+    var d = defaultState();
+    if (parsed.settings && typeof parsed.settings === "object"){
+      Object.keys(d.settings).forEach(function(k){ if (parsed.settings[k] !== undefined) d.settings[k] = parsed.settings[k]; });
+    }
+    d.jobs = Array.isArray(parsed.jobs) ? parsed.jobs.map(normalizeJob) : [];
+    d.currentJobId = typeof parsed.currentJobId === "string" ? parsed.currentJobId : "";
+    d.seeded = !!parsed.seeded;
+    d.legal = sanitizeLegal(parsed.legal);
+    state = d;
+  }catch(e){ /* corrupt storage -> fresh default state */ }
+}
+function seedDemo(){
+  var j = defaultJob();
+  j.demo = true;
+  j.property = { homeowner:"James & Lori Hartman", address:"412 Oak Ridge Dr, Tulsa, OK", phone:"918-555-0147", email:"", roofType:"Asphalt shingle — architectural", pitch:"7/12", stories:2, roofAge:11, squares:24.5 };
+  j.loss = { dateOfLoss:"2026-10-19", stormType:"Wind + hail" };
+  j.inspection.date = "2026-10-21"; j.inspection.inspector = "Crew Lead";
+  j.inspection.areas.shingles = { severity:"moderate", findings:["Creased / wind-lifted tabs","Hail hits / bruising","Damage on multiple slopes"], notes:"Rear slope worst — approx. 14 creased tabs along the eave; scattered hail hits field-wide." };
+  j.inspection.areas.flashing = { severity:"minor", findings:["Pipe boots cracked"], notes:"Two pipe boots cracked at the collar." };
+  j.inspection.areas.gutters = { severity:"minor", findings:["Dents from hail"], notes:"Front gutter dented in three places; still draining." };
+  j.inspection.areas.vents = { severity:"moderate", findings:["Turbine / whirlybird damaged"], notes:"One turbine bent and seized." };
+  j.inspection.areas.decking = { severity:"none", findings:[], notes:"" };
+  j.inspection.areas.interior = { severity:"minor", findings:["Ceiling stains"], notes:"Water stain, primary bedroom ceiling, approx. 2 ft across. No active drip at inspection." };
+  j.inspection.photos = [
+    { id: uid(), file:"IMG_2041", area:"shingles", desc:"Rear slope overview from ladder", date:"2026-10-21" },
+    { id: uid(), file:"IMG_2047", area:"shingles", desc:"Creased tabs at eave, close-up with chalk marks", date:"2026-10-21" },
+    { id: uid(), file:"IMG_2052", area:"vents", desc:"Bent turbine vent", date:"2026-10-21" },
+    { id: uid(), file:"IMG_2058", area:"interior", desc:"Bedroom ceiling stain with tape measure", date:"2026-10-21" }
+  ];
+  j.inspection.generalNotes = "Access from driveway side. Dog in yard — homeowner will secure on visit days.";
+  j.claim = { carrier:"Prairie State Mutual", claimNo:"CLM-26-88413", policyNo:"HO-5519-22", adjuster:"D. Whitfield", adjPhone:"800-555-0119", adjEmail:"", dateFiled:"2026-10-23", meetingDate:"2026-10-29", decision:"pending" };
+  j.docs[0].sent = true; j.docs[0].date = "2026-10-21"; j.docs[0].method = "Hand-delivered";
+  j.docs[1].sent = true; j.docs[1].date = "2026-10-23"; j.docs[1].method = "Email";
+  j.docs[2].sent = true; j.docs[2].date = "2026-10-23"; j.docs[2].method = "Email";
+  j.docs[3].sent = true; j.docs[3].date = "2026-10-24"; j.docs[3].method = "Email";
+  j.tracker.stage = 2;
+  j.tracker.stageDates = { "0":"2026-10-21", "1":"2026-10-23", "2":"2026-10-29" };
+  j.tracker.money = { rcv:14800, deductible:1000, acv:9250, released:0, releasedDate:"", supp:"", suppStatus:"none" };
+  j.home.tarp = { area:600, rate:1.25, min:250, date:"2026-10-21", scope:"Tarp rear slope over creased-tab section at the eave, approx. 600 sq ft, sandbagged at edges (no new fasteners through sound shingles)." };
+  state.jobs.push(j);
+  state.currentJobId = j.id;
+  state.seeded = true;
+}
+
+/* ================= UI helpers ================= */
+function $(id){ return document.getElementById(id); }
+function msg(text, ok){
+  var m = $("msg"); m.textContent = text; m.className = "msg " + (ok ? "ok" : "err");
+  setTimeout(function(){ m.className = "msg"; }, 4200);
+}
+function currentJob(){
+  for (var i=0;i<state.jobs.length;i++) if (state.jobs[i].id === state.currentJobId) return state.jobs[i];
+  return state.jobs[0] || null;
+}
+function jobHeadHtml(job){
+  if (!job) return '<p class="notice">No job file is open. Create one from the <strong>Job Files</strong> tab first.</p>';
+  return '<p style="margin:0 0 6px"><strong>' + esc(job.property.homeowner || "Untitled job") + '</strong> · ' + esc(job.property.address || "—") +
+    ' · <span class="stage">' + esc(STAGES[job.tracker.stage]) + '</span>' +
+    (job.claim.claimNo ? ' · Claim #' + esc(job.claim.claimNo) : '') + '</p>';
+}
+function companyHeaderHtml(){
+  var c = state.settings;
+  return "<h1>" + esc(c.company || "Roofing Company") + "</h1><p>" + esc([c.address, c.phone, c.email, c.license ? "Lic. " + c.license : ""].filter(Boolean).join(" · ")) + "</p>";
+}
+
+/* ================= Views ================= */
+function showTab(name){
+  ["jobs","inspect","claim","home","track","settings","help"].forEach(function(t){
+    $("view-" + t).hidden = (t !== name);
+  });
+  var btns = $("tabs").querySelectorAll("button");
+  btns.forEach(function(b){ b.classList.toggle("on", b.getAttribute("data-tab") === name); });
+  if (name === "jobs") renderJobs();
+  if (name === "inspect") renderInspection();
+  if (name === "claim") renderClaim();
+  if (name === "home") renderHome();
+  if (name === "track") renderTrack();
+  if (name === "settings") renderSettings();
+  window.scrollTo(0,0);
+}
+
+function renderJobs(){
+  var q = ($("jobSearch").value || "").toLowerCase();
+  var list = state.jobs.filter(function(j){
+    if (!q) return true;
+    var hay = [j.property.homeowner, j.property.address, j.claim.carrier, j.claim.claimNo].join(" ").toLowerCase();
+    return hay.indexOf(q) >= 0;
+  });
+  var totalHeld = 0, open = 0;
+  state.jobs.forEach(function(j){ var mm = moneyMath(j.tracker.money); totalHeld += mm.remaining; if (j.tracker.stage < STAGES.length-1) open++; });
+  $("jobKpis").innerHTML =
+    '<div class="kpi"><div class="v">' + state.jobs.length + '</div><div class="l">Job files</div></div>' +
+    '<div class="kpi"><div class="v">' + open + '</div><div class="l">Open claims</div></div>' +
+    '<div class="kpi"><div class="v money">' + money(totalHeld) + '</div><div class="l">Depreciation still recoverable (all jobs)</div></div>';
+  if (!list.length){
+    $("jobList").innerHTML = '<div class="card"><p>No job files match. ' + (state.jobs.length ? "Try a different search." : "Tap <strong>+ New Job File</strong> to start the first one.") + '</p></div>';
+    return;
+  }
+  $("jobList").innerHTML = list.map(function(j){
+    var mm = moneyMath(j.tracker.money);
+    return '<div class="jobcard" data-open="' + j.id + '">' +
+      '<strong>' + esc(j.property.homeowner || "Untitled job") + '</strong>' + (j.demo ? ' <span class="chip">DEMO</span>' : '') + '<br>' +
+      '<span class="fine">' + esc(j.property.address || "—") + '</span><br>' +
+      '<span class="chip">Stage: ' + esc(STAGES[j.tracker.stage]) + '</span>' +
+      (j.claim.carrier ? '<span class="chip">' + esc(j.claim.carrier) + '</span>' : '') +
+      (j.claim.claimNo ? '<span class="chip">Claim #' + esc(j.claim.claimNo) + '</span>' : '') +
+      (mm.remaining > 0 ? '<span class="chip">Held back: ' + money(mm.remaining) + '</span>' : '') +
+      '<div style="margin-top:8px"><button class="btn sec sm" data-open="' + j.id + '">Open job file</button> ' +
+      '<button class="btn ghost sm" data-del="' + j.id + '">Delete</button></div></div>';
+  }).join("");
+  $("jobList").querySelectorAll("[data-open]").forEach(function(el){
+    el.addEventListener("click", function(ev){ ev.stopPropagation(); state.currentJobId = el.getAttribute("data-open"); save(); showTab("inspect"); });
+  });
+  $("jobList").querySelectorAll("[data-del]").forEach(function(el){
+    el.addEventListener("click", function(ev){
+      ev.stopPropagation();
+      var id = el.getAttribute("data-del");
+      var dj = state.jobs.filter(function(j){ return j.id === id; })[0];
+      if (!confirm("Delete the job file for \"" + (dj ? (dj.property.homeowner || "Untitled job") : id) + "\"? The whole file — inspection, claim packet, and tracker — goes with it. This cannot be undone.")) return;
+      state.jobs = state.jobs.filter(function(j){ return j.id !== id; });
+      if (state.currentJobId === id) state.currentJobId = state.jobs.length ? state.jobs[0].id : "";
+      save(); renderJobs(); msg("Job file deleted.", true);
+    });
+  });
+}
+
+/* ---- Inspection ---- */
+function bindJobFields(job){
+  var map = {
+    f_homeowner:["property","homeowner"], f_address:["property","address"], f_hphone:["property","phone"], f_hemail:["property","email"],
+    f_roofType:["property","roofType"], f_pitch:["property","pitch"], f_stories:["property","stories"], f_roofAge:["property","roofAge"], f_squares:["property","squares"],
+    f_lossDate:["loss","dateOfLoss"], f_stormType:["loss","stormType"],
+    f_inspDate:["inspection","date"], f_inspector:["inspection","inspector"], f_generalNotes:["inspection","generalNotes"]
+  };
+  Object.keys(map).forEach(function(id){
+    var el = $(id); if (!el) return;
+    el.value = job[map[id][0]][map[id][1]] == null ? "" : job[map[id][0]][map[id][1]];
+    el.oninput = el.onchange = function(){ job[map[id][0]][map[id][1]] = el.value; save(); };
+  });
+}
+function renderInspection(){
+  var job = currentJob();
+  $("inspJobHead").innerHTML = jobHeadHtml(job);
+  if (!job) { $("areaList").innerHTML = ""; $("photoList").innerHTML = ""; return; }
+  bindJobFields(job);
+  /* areas */
+  $("areaList").innerHTML = AREAS.map(function(a){
+    var d = job.inspection.areas[a.key];
+    var fHtml = a.findings.map(function(f){
+      var chk = d.findings.indexOf(f) >= 0 ? " checked" : "";
+      return '<label><input type="checkbox" data-area="' + a.key + '" data-find="' + esc(f) + '"' + chk + '> ' + esc(f) + '</label>';
+    }).join("");
+    return '<div style="border-top:1px solid var(--line);padding:10px 0">' +
+      '<strong>' + esc(a.name) + '</strong>' +
+      '<div class="row"><div style="flex:0 1 170px"><label>Severity</label>' +
+      '<select data-sev="' + a.key + '">' +
+      ["none","minor","moderate","severe"].map(function(sv){ return '<option value="' + sv + '"' + (d.severity===sv?" selected":"") + '>' + sv[0].toUpperCase()+sv.slice(1) + (sv==="none" ? " — no damage" : "") + '</option>'; }).join("") +
+      '</select></div>' +
+      '<div><label>Notes (slope, count, location…)</label><input data-notes="' + a.key + '" value="' + esc(d.notes) + '"></div></div>' +
+      '<div class="findings">' + fHtml + '</div></div>';
+  }).join("");
+  $("areaList").querySelectorAll("[data-sev]").forEach(function(el){
+    el.addEventListener("change", function(){ job.inspection.areas[el.getAttribute("data-sev")].severity = el.value; save(); });
+  });
+  $("areaList").querySelectorAll("[data-notes]").forEach(function(el){
+    el.addEventListener("input", function(){ job.inspection.areas[el.getAttribute("data-notes")].notes = el.value; save(); });
+  });
+  $("areaList").querySelectorAll("[data-find]").forEach(function(el){
+    el.addEventListener("change", function(){
+      var arr = job.inspection.areas[el.getAttribute("data-area")].findings, f = el.getAttribute("data-find");
+      if (el.checked && arr.indexOf(f) < 0) arr.push(f);
+      if (!el.checked) { var i = arr.indexOf(f); if (i >= 0) arr.splice(i,1); }
+      save();
+    });
+  });
+  renderPhotos(job);
+}
+function renderPhotos(job){
+  $("photoList").innerHTML = job.inspection.photos.length ? job.inspection.photos.map(function(p){
+    return '<div class="row" style="align-items:end;border-bottom:1px solid var(--line);padding-bottom:6px">' +
+      '<div><label>Photo file name</label><input data-ph="file" data-id="' + p.id + '" value="' + esc(p.file) + '" placeholder="IMG_2041"></div>' +
+      '<div><label>Area</label><select data-ph="area" data-id="' + p.id + '">' +
+        AREAS.map(function(a){ return '<option value="' + a.key + '"' + (p.area===a.key?" selected":"") + '>' + esc(a.name) + '</option>'; }).join("") +
+        '<option value="general"' + (p.area==="general"?" selected":"") + '>General / exterior</option></select></div>' +
+      '<div style="flex:2 1 240px"><label>What it shows</label><input data-ph="desc" data-id="' + p.id + '" value="' + esc(p.desc) + '"></div>' +
+      '<div><label>Date</label><input type="date" data-ph="date" data-id="' + p.id + '" value="' + esc(p.date) + '"></div>' +
+      '<div style="flex:0 0 auto"><button class="btn ghost sm" data-phdel="' + p.id + '">Remove</button></div></div>';
+  }).join("") : '<p class="fine">No photo references yet.</p>';
+  $("photoList").querySelectorAll("[data-ph]").forEach(function(el){
+    var upd = function(){
+      var p = job.inspection.photos.filter(function(x){ return x.id === el.getAttribute("data-id"); })[0];
+      if (p) { p[el.getAttribute("data-ph")] = el.value; save(); }
+    };
+    el.addEventListener("input", upd); el.addEventListener("change", upd);
+  });
+  $("photoList").querySelectorAll("[data-phdel]").forEach(function(el){
+    el.addEventListener("click", function(){
+      var ph = job.inspection.photos.filter(function(x){ return x.id === el.getAttribute("data-phdel"); })[0];
+      if (!confirm("Remove photo reference \"" + (ph ? (ph.file || "photo") : "photo") + "\"? This cannot be undone.")) return;
+      job.inspection.photos = job.inspection.photos.filter(function(x){ return x.id !== el.getAttribute("data-phdel"); });
+      save(); renderPhotos(job);
+    });
+  });
+}
+
+/* ---- Claim packet ---- */
+function renderClaim(){
+  var job = currentJob();
+  $("claimJobHead").innerHTML = jobHeadHtml(job);
+  if (!job) { $("scopeSummary").textContent = ""; $("docList").innerHTML = ""; return; }
+  var cmap = { c_carrier:"carrier", c_claimNo:"claimNo", c_policyNo:"policyNo", c_adjuster:"adjuster", c_adjPhone:"adjPhone", c_adjEmail:"adjEmail", c_dateFiled:"dateFiled", c_meetingDate:"meetingDate", c_decision:"decision" };
+  Object.keys(cmap).forEach(function(id){
+    var el = $(id); el.value = job.claim[cmap[id]] || "";
+    el.oninput = el.onchange = function(){ job.claim[cmap[id]] = el.value; save(); if (id === "c_decision") syncStageWithDecision(job); };
+  });
+  $("scopeSummary").textContent = buildScopeSummary(job) + (job.extraScope ? "\n\nAdditional scope notes:\n" + job.extraScope : "");
+  $("c_extraScope").value = job.extraScope || "";
+  $("c_extraScope").oninput = function(){ job.extraScope = $("c_extraScope").value; save(); $("scopeSummary").textContent = buildScopeSummary(job) + (job.extraScope ? "\n\nAdditional scope notes:\n" + job.extraScope : ""); };
+  $("letterBody").value = job.letter || letterTemplate(job, state.settings);
+  $("letterBody").oninput = function(){ job.letter = $("letterBody").value; save(); };
+  renderDocs(job);
+}
+function syncStageWithDecision(job){
+  if (job.claim.decision !== "pending" && job.tracker.stage < 3){
+    job.tracker.stage = 3;
+    if (!job.tracker.stageDates["3"]) job.tracker.stageDates["3"] = todayStr();
+    save();
+  }
+}
+function renderDocs(job){
+  $("docList").innerHTML = job.docs.map(function(d){
+    return '<div class="row" style="align-items:end;border-bottom:1px solid var(--line);padding-bottom:6px">' +
+      '<div style="flex:0 0 34px"><label>Sent</label><input type="checkbox" data-doc="' + d.id + '" data-k="sent"' + (d.sent?" checked":"") + '></div>' +
+      '<div style="flex:2 1 220px"><label>Document</label><input data-doc="' + d.id + '" data-k="name" value="' + esc(d.name) + '"></div>' +
+      '<div><label>Date sent</label><input type="date" data-doc="' + d.id + '" data-k="date" value="' + esc(d.date) + '"></div>' +
+      '<div><label>How</label><input data-doc="' + d.id + '" data-k="method" value="' + esc(d.method) + '" placeholder="Email / mail / portal"></div>' +
+      '<div style="flex:0 0 auto"><button class="btn ghost sm" data-docdel="' + d.id + '">Remove</button></div></div>';
+  }).join("");
+  $("docList").querySelectorAll("[data-doc]").forEach(function(el){
+    var upd = function(){
+      var d = job.docs.filter(function(x){ return x.id === el.getAttribute("data-doc"); })[0];
+      if (!d) return;
+      var k = el.getAttribute("data-k");
+      d[k] = (k === "sent") ? el.checked : el.value;
+      save();
+    };
+    el.addEventListener("input", upd); el.addEventListener("change", upd);
+  });
+  $("docList").querySelectorAll("[data-docdel]").forEach(function(el){
+    el.addEventListener("click", function(){
+      var dc = job.docs.filter(function(x){ return x.id === el.getAttribute("data-docdel"); })[0];
+      if (!confirm("Remove document \"" + (dc ? dc.name : "document") + "\" from the packet list? This cannot be undone.")) return;
+      job.docs = job.docs.filter(function(x){ return x.id !== el.getAttribute("data-docdel"); });
+      save(); renderDocs(job);
+    });
+  });
+}
+
+/* ---- Homeowner pack ---- */
+function renderHome(){
+  var job = currentJob();
+  $("homeJobHead").innerHTML = jobHeadHtml(job);
+  if (!job) return;
+  if (!job.home.door) job.home.door = doorHangerDefault(job, state.settings);
+  if (!job.home.expect) job.home.expect = expectDefault(job, state.settings);
+  if (!job.home.tarpTerms) job.home.tarpTerms = tarpTermsDefault();
+  $("h_door").value = job.home.door;
+  $("h_expect").value = job.home.expect;
+  $("h_tarpTerms").value = job.home.tarpTerms;
+  $("h_door").oninput = function(){ job.home.door = $("h_door").value; save(); };
+  $("h_expect").oninput = function(){ job.home.expect = $("h_expect").value; save(); };
+  $("h_tarpTerms").oninput = function(){ job.home.tarpTerms = $("h_tarpTerms").value; save(); };
+  var t = job.home.tarp;
+  if ((t.rate === "" || t.rate == null) && num(state.settings.tarpRate) > 0) t.rate = state.settings.tarpRate;
+  if ((t.min === "" || t.min == null) && num(state.settings.tarpMin) > 0) t.min = state.settings.tarpMin;
+  $("t_area").value = t.area; $("t_rate").value = t.rate; $("t_min").value = t.min; $("t_date").value = t.date || ""; $("t_scope").value = t.scope || "";
+  var updT = function(){
+    t.area = $("t_area").value; t.rate = $("t_rate").value; t.min = $("t_min").value; t.date = $("t_date").value; t.scope = $("t_scope").value;
+    save(); renderTarpTotal(job);
+  };
+  ["t_area","t_rate","t_min","t_date","t_scope"].forEach(function(id){ $(id).oninput = updT; $(id).onchange = updT; });
+  renderTarpTotal(job);
+}
+function renderTarpTotal(job){
+  var t = job.home.tarp;
+  var total = tarpTotal({ area: t.area, rate: t.rate, min: t.min });
+  $("t_total").textContent = money(total);
+  var raw = num(t.area) * num(t.rate);
+  $("t_note").textContent = num(t.area) > 0 && raw < num(t.min) ? "(minimum charge applied — " + money(num(t.area)) + " sq ft × " + money(num(t.rate)) + " = " + money(raw) + ")" : (num(t.area) > 0 ? "(" + num(t.area) + " sq ft × " + money(num(t.rate)) + "/sq ft)" : "");
+}
+
+/* ---- Tracker ---- */
+function renderTrack(){
+  var job = currentJob();
+  $("trackJobHead").innerHTML = jobHeadHtml(job);
+  if (!job) { $("pipeView").innerHTML = ""; $("moneyKpis").innerHTML = ""; return; }
+  $("pipeView").innerHTML = STAGES.map(function(s, i){
+    var cls = i < job.tracker.stage ? "done" : (i === job.tracker.stage ? "cur" : "");
+    var dt = job.tracker.stageDates[String(i)] ? " · " + job.tracker.stageDates[String(i)] : "";
+    return (i ? '<span class="arw">→</span>' : '') + '<span class="st ' + cls + '">' + esc(s) + esc(dt) + '</span>';
+  }).join("");
+  $("stageSel").innerHTML = STAGES.map(function(s, i){ return '<option value="' + i + '"' + (job.tracker.stage===i?" selected":"") + '>' + esc(s) + '</option>'; }).join("");
+  $("stageDate").value = job.tracker.stageDates[String(job.tracker.stage)] || todayStr();
+  var hist = Object.keys(job.tracker.stageDates).sort().map(function(k){ return STAGES[parseInt(k,10)] + ": " + job.tracker.stageDates[k]; });
+  $("stageHistory").textContent = hist.length ? "History — " + hist.join(" · ") : "";
+  var mmap = { m_rcv:"rcv", m_deductible:"deductible", m_acv:"acv", m_released:"released", m_releasedDate:"releasedDate", m_supp:"supp", m_suppStatus:"suppStatus" };
+  Object.keys(mmap).forEach(function(id){
+    var el = $(id); el.value = job.tracker.money[mmap[id]] == null ? "" : job.tracker.money[mmap[id]];
+    el.oninput = el.onchange = function(){ job.tracker.money[mmap[id]] = el.value; save(); renderMoneyKpis(job); };
+  });
+  renderMoneyKpis(job);
+}
+function renderMoneyKpis(job){
+  var mm = moneyMath(job.tracker.money);
+  $("moneyKpis").innerHTML =
+    '<div class="kpi"><div class="v money">' + money(mm.heldBack) + '</div><div class="l">Depreciation held back (total)</div></div>' +
+    '<div class="kpi"><div class="v money">' + money(mm.released) + '</div><div class="l">Released so far</div></div>' +
+    '<div class="kpi"><div class="v money">' + money(mm.remaining) + '</div><div class="l">Still recoverable — don\'t lose it</div></div>' +
+    '<div class="kpi"><div class="v money">' + money(mm.carrierTotal) + '</div><div class="l">Carrier pays in total (RCV − deductible)</div></div>' +
+    '<div class="kpi"><div class="v money">' + money(mm.stillOwed) + '</div><div class="l">Still owed by carrier</div></div>';
+}
+
+/* ---- Settings ---- */
+function renderSettings(){
+  var smap = { s_company:"company", s_phone:"phone", s_email:"email", s_address:"address", s_license:"license", s_tarpRate:"tarpRate", s_tarpMin:"tarpMin" };
+  Object.keys(smap).forEach(function(id){
+    var el = $(id); el.value = state.settings[smap[id]] == null ? "" : state.settings[smap[id]];
+    el.oninput = el.onchange = function(){
+      state.settings[smap[id]] = (id === "s_tarpRate" || id === "s_tarpMin") ? num(el.value) : el.value;
+      save(); $("coName").textContent = state.settings.company || "";
+    };
+  });
+}
+
+/* ================= Print builders (tested) ================= */
+function printDoc(html){ $("printArea").innerHTML = html; window.print(); }
+function inspectionReportHtml(job){
+  var c = state.settings;
+  var rows = AREAS.map(function(a){
+    var d = job.inspection.areas[a.key];
+    return "<tr><td><strong>" + esc(a.name) + "</strong></td><td>" + esc(d.severity) + "</td><td>" + esc((d.findings || []).join(", ") || "—") + "</td><td>" + esc(d.notes || "—") + "</td></tr>";
+  }).join("");
+  var photos = job.inspection.photos.length ? job.inspection.photos.map(function(p){
+    var areaName = (AREAS.filter(function(a){ return a.key === p.area; })[0] || {}).name || p.area || "General";
+    return "<tr><td>" + esc(p.file) + "</td><td>" + esc(areaName) + "</td><td>" + esc(p.desc) + "</td><td>" + esc(p.date) + "</td></tr>";
+  }).join("") : '<tr><td colspan="4">No photo references logged.</td></tr>';
+  return companyHeaderHtml() +
+    "<h2>Storm Damage Inspection Report</h2>" +
+    "<p><strong>Homeowner:</strong> " + esc(job.property.homeowner) + " · <strong>Property:</strong> " + esc(job.property.address) + "<br>" +
+    "<strong>Roof:</strong> " + esc(job.property.roofType) + (job.property.pitch ? ", " + esc(job.property.pitch) + " pitch" : "") + (job.property.squares ? ", " + esc(job.property.squares) + " squares" : "") + (job.property.roofAge ? ", approx. " + esc(job.property.roofAge) + " yrs old" : "") + "<br>" +
+    "<strong>Date of loss:</strong> " + esc(job.loss.dateOfLoss || "—") + " (" + esc(job.loss.stormType) + ") · <strong>Inspected:</strong> " + esc(job.inspection.date || "—") + " by " + esc(job.inspection.inspector || "—") + "</p>" +
+    "<h2>Damage by area</h2><table><tr><th>Area</th><th>Severity</th><th>Findings</th><th>Notes</th></tr>" + rows + "</table>" +
+    (job.inspection.generalNotes ? "<p><strong>General notes:</strong> " + esc(job.inspection.generalNotes) + "</p>" : "") +
+    "<h2>Photo reference log</h2><table><tr><th>Photo file</th><th>Area</th><th>Description</th><th>Date</th></tr>" + photos + "</table>" +
+    '<div class="sig"><div>Inspector signature / date</div><div>Homeowner signature / date</div></div>' +
+    '<p class="fine">This report documents conditions observed at inspection. It is a documentation record, not legal or insurance advice, and makes no representation about coverage or claim outcomes.</p>';
+}
+function claimSummaryHtml(job){
+  var mm = moneyMath(job.tracker.money);
+  var docs = job.docs.map(function(d){ return "<tr><td>" + esc(d.name) + "</td><td>" + (d.sent ? "Sent" : "Not sent") + "</td><td>" + esc(d.date || "—") + "</td><td>" + esc(d.method || "—") + "</td></tr>"; }).join("");
+  return companyHeaderHtml() +
+    "<h2>Claim Summary</h2>" +
+    "<p><strong>Homeowner:</strong> " + esc(job.property.homeowner) + " · <strong>Property:</strong> " + esc(job.property.address) + "<br>" +
+    "<strong>Carrier:</strong> " + esc(job.claim.carrier || "—") + " · <strong>Claim #:</strong> " + esc(job.claim.claimNo || "—") + " · <strong>Policy #:</strong> " + esc(job.claim.policyNo || "—") + "<br>" +
+    "<strong>Adjuster:</strong> " + esc(job.claim.adjuster || "—") + " · <strong>Date of loss:</strong> " + esc(job.loss.dateOfLoss || "—") + " · <strong>Stage:</strong> " + esc(STAGES[job.tracker.stage]) + " · <strong>Decision:</strong> " + esc(job.claim.decision) + "</p>" +
+    "<h2>Scope summary</h2><p class='ph'>" + esc(buildScopeSummary(job)) + (job.extraScope ? "\n\nAdditional scope notes:\n" + esc(job.extraScope) : "") + "</p>" +
+    "<h2>Documents sent to carrier</h2><table><tr><th>Document</th><th>Status</th><th>Date</th><th>Method</th></tr>" + docs + "</table>" +
+    "<h2>Money</h2><table>" +
+    "<tr><td>Approved claim value (RCV)</td><td class='money'>" + money(mm.rcv) + "</td></tr>" +
+    "<tr><td>Deductible</td><td class='money'>" + money(mm.deductible) + "</td></tr>" +
+    "<tr><td>ACV received</td><td class='money'>" + money(mm.acv) + "</td></tr>" +
+    "<tr><td>Depreciation held back</td><td class='money'>" + money(mm.heldBack) + "</td></tr>" +
+    "<tr><td>Depreciation released</td><td class='money'>" + money(mm.released) + "</td></tr>" +
+    "<tr><td><strong>Still recoverable</strong></td><td class='money'><strong>" + money(mm.remaining) + "</strong></td></tr></table>" +
+    '<p class="fine">Planning figures from the amounts entered. The carrier\'s estimate and the homeowner\'s policy control actual payments. This summary is a documentation aid, not legal or insurance advice.</p>';
+}
+function letterHtml(job){
+  return companyHeaderHtml() + "<p class='ph'>" + esc($("letterBody").value || job.letter || letterTemplate(job, state.settings)) + "</p>";
+}
+function simpleDocHtml(title, bodyText){
+  return companyHeaderHtml() + "<h2>" + esc(title) + "</h2><p class='ph'>" + esc(bodyText) + "</p>";
+}
+function tarpAgreementHtml(job){
+  var t = job.home.tarp;
+  var total = tarpTotal({ area: t.area, rate: t.rate, min: t.min });
+  return companyHeaderHtml() +
+    "<h2>Temporary Repair (Tarping) Agreement</h2>" +
+    "<p><strong>Homeowner:</strong> " + esc(job.property.homeowner) + " · <strong>Property:</strong> " + esc(job.property.address) + "<br>" +
+    "<strong>Date of temporary repair:</strong> " + esc(t.date || "—") + "</p>" +
+    "<p><strong>Scope:</strong> " + esc(t.scope || "—") + "</p>" +
+    "<p><strong>Tarped area:</strong> " + esc(num(t.area)) + " sq ft × " + money(num(t.rate)) + "/sq ft" + (num(t.area) * num(t.rate) < num(t.min) && num(t.area) > 0 ? " — minimum charge applies" : "") + "<br>" +
+    "<strong>Total for temporary repair: " + money(total) + "</strong></p>" +
+    "<p class='ph'>" + esc(job.home.tarpTerms || tarpTermsDefault()) + "</p>" +
+    '<div class="sig"><div>Contractor signature / date</div><div>Homeowner signature / date</div></div>';
+}
+
+/* ================= Wiring ================= */
+function init(){
+  load();
+  if (!state.seeded && state.jobs.length === 0){ seedDemo(); save(); }
+  $("coName").textContent = state.settings.company || "";
+  $("tabs").querySelectorAll("button").forEach(function(b){
+    b.addEventListener("click", function(){ showTab(b.getAttribute("data-tab")); });
+  });
+  $("newJobBtn").addEventListener("click", function(){
+    var j = defaultJob();
+    j.home.tarp.rate = state.settings.tarpRate; j.home.tarp.min = state.settings.tarpMin;
+    state.jobs.unshift(j); state.currentJobId = j.id; save();
+    showTab("inspect"); msg("New job file created — start with the inspection.", true);
+  });
+  $("clearDemoBtn").addEventListener("click", function(){
+    var before = state.jobs.length;
+    state.jobs = state.jobs.filter(function(j){ return !j.demo; });
+    if (state.currentJobId && !currentJob()) state.currentJobId = state.jobs.length ? state.jobs[0].id : "";
+    save(); renderJobs();
+    msg(before > state.jobs.length ? "Demo data cleared — your own job files were kept." : "No demo data to clear.", true);
+  });
+  $("jobSearch").addEventListener("input", renderJobs);
+  $("addPhotoBtn").addEventListener("click", function(){
+    var job = currentJob(); if (!job) return;
+    job.inspection.photos.push({ id: uid(), file:"", area:"shingles", desc:"", date: todayStr() });
+    save(); renderPhotos(job);
+  });
+  $("printInspBtn").addEventListener("click", function(){ var job = currentJob(); if (job) printDoc(inspectionReportHtml(job)); });
+  $("addDocBtn").addEventListener("click", function(){
+    var job = currentJob(); if (!job) return;
+    var name = $("newDocName").value.trim(); if (!name) { msg("Type a document name first.", false); return; }
+    job.docs.push({ id: uid(), name: name, sent:false, date:"", method:"", notes:"" });
+    $("newDocName").value = ""; save(); renderDocs(job);
+  });
+  $("regenLetterBtn").addEventListener("click", function(){
+    var job = currentJob(); if (!job) return;
+    job.letter = letterTemplate(job, state.settings); $("letterBody").value = job.letter; save(); msg("Letter regenerated from current job data.", true);
+  });
+  $("printLetterBtn").addEventListener("click", function(){ var job = currentJob(); if (job) printDoc(letterHtml(job)); });
+  $("printPacketBtn").addEventListener("click", function(){ var job = currentJob(); if (job) printDoc(claimSummaryHtml(job)); });
+  document.querySelectorAll("[data-reset]").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      var job = currentJob(); if (!job) return;
+      var k = btn.getAttribute("data-reset");
+      if (k === "door") { job.home.door = doorHangerDefault(job, state.settings); $("h_door").value = job.home.door; }
+      if (k === "expect") { job.home.expect = expectDefault(job, state.settings); $("h_expect").value = job.home.expect; }
+      save(); msg("Template reset to the built-in text.", true);
+    });
+  });
+  $("printDoorBtn").addEventListener("click", function(){ var job = currentJob(); if (job) printDoc(simpleDocHtml("Post-Storm Notice", job.home.door)); });
+  $("printExpectBtn").addEventListener("click", function(){ var job = currentJob(); if (job) printDoc(simpleDocHtml("What to Expect — Your Roof Claim", job.home.expect)); });
+  $("printTarpBtn").addEventListener("click", function(){ var job = currentJob(); if (job) printDoc(tarpAgreementHtml(job)); });
+  $("setStageBtn").addEventListener("click", function(){
+    var job = currentJob(); if (!job) return;
+    var idx = parseInt($("stageSel").value, 10) || 0;
+    job.tracker.stage = idx;
+    job.tracker.stageDates[String(idx)] = $("stageDate").value || todayStr();
+    save(); renderTrack(); msg("Stage set to " + STAGES[idx] + ".", true);
+  });
+  $("printTrackBtn").addEventListener("click", function(){ var job = currentJob(); if (job) printDoc(claimSummaryHtml(job)); });
+  $("exportBtn").addEventListener("click", function(){
+    var blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "roofstormkit-backup.json";
+    document.body.appendChild(a); a.click(); a.remove();
+    msg("Backup exported.", true);
+  });
+  function doImport(text){
+    try{
+      var parsed = JSON.parse(text);
+      if (!parsed || typeof parsed !== "object" || !Array.isArray(parsed.jobs)) throw new Error("shape");
+      var ns = defaultState();
+      if (parsed.settings && typeof parsed.settings === "object"){
+        Object.keys(ns.settings).forEach(function(k){ if (parsed.settings[k] !== undefined) ns.settings[k] = parsed.settings[k]; });
+      }
+      ns.jobs = parsed.jobs.map(normalizeJob);
+      ns.currentJobId = ns.jobs.length ? ns.jobs[0].id : "";
+      ns.seeded = true;
+      state = ns; save();
+      $("coName").textContent = state.settings.company || "";
+      showTab("jobs"); msg("Backup imported — " + ns.jobs.length + " job file(s) restored.", true);
+    }catch(e){
+      msg("That backup could not be read. Nothing was changed.", false);
+    }
+  }
+  $("importBtn").addEventListener("click", function(){
+    var t = $("importText").value.trim();
+    if (t) { doImport(t); return; }
+    $("importFile").click();
+  });
+  $("importFile").addEventListener("change", function(){
+    var f = $("importFile").files && $("importFile").files[0];
+    if (!f) return;
+    var r = new FileReader();
+    r.onload = function(){ doImport(String(r.result || "")); };
+    r.readAsText(f);
+  });
+  $("eraseBtn").addEventListener("click", function(){
+    if (!confirm("Erase ALL data — every job file and your settings? This cannot be undone.")) return;
+    state = defaultState(); state.seeded = true;
+    try{ localStorage.removeItem(STORE_KEY); }catch(e){}
+    save(); $("coName").textContent = ""; showTab("jobs"); msg("All data erased.", true);
+  });
+  showTab("jobs");
+}
+
+/* Test hooks */
+window.KIT = { moneyMath: moneyMath, tarpTotal: tarpTotal, buildScopeSummary: buildScopeSummary, letterTemplate: letterTemplate,
+  doorHangerDefault: doorHangerDefault, expectDefault: expectDefault, tarpTermsDefault: tarpTermsDefault,
+  inspectionReportHtml: inspectionReportHtml, claimSummaryHtml: claimSummaryHtml, tarpAgreementHtml: tarpAgreementHtml,
+  normalizeJob: normalizeJob, defaultJob: defaultJob, STAGES: STAGES, AREAS: AREAS,
+  getState: function(){ return state; }, setState: function(s){ state = s; } };
+
+document.addEventListener("DOMContentLoaded", init);
+
+/* ================= Legal — Terms of Use acceptance (catalog pattern v1.0) ================= */
+var TERMS_VERSION = "1.0";
+var LEGAL_APP_NAME = "RoofSquares Storm Kit";
+var LEGAL_HAS_DISCLAIMER = true;
+var LEGAL_TERMS_HTML = "<h3>Terms of Use \u2014 White Wolf Digital Apps</h3><p><b>Version 1.0 (DRAFT \u2014 pending attorney review)</b></p><p><b>Seller: White Wolf Tree Service LLC, selling digital products under the name \"White Wolf Digital\"</b></p><p><b>Contact: whitewolfoklahoma@gmail.com</b></p><h4>1. What you're buying</h4><p>Our apps (including ForgeFit AI, ForgeKitchen, TreeBid Pro, SnowBid,</p><p>WashPrice Pro, RoofSquares, JobProfit Tracker, PastureLedger, and the other</p><p>titles sold under White Wolf Digital) are single-file software tools. When</p><p>you buy one, you are buying a <b>license to use the file</b>, not ownership of</p><p>the software itself.</p><h4>2. Your license</h4><ul><li>You may use the app for your own personal or business work.</li><li>You may open it on your own devices (phone, tablet, computer) and move your</li></ul><p>  own data between them using the app's built-in backup/export tools.</p><ul><li>You may <b>not</b> resell, redistribute, give away, upload, or share the app</li></ul><p>  file (or a copy of it) with anyone else \u2014 including posting it online,</p><p>  bundling it with other products, or selling access to it.</p><ul><li>You may <b>not</b> claim the app as your own work, remove its branding or</li></ul><p>  notices, or use it to build a competing product for resale.</p><ul><li>One purchase = one buyer. A business purchase covers the buyer and their</li></ul><p>  own employees using it for that business's work; it does not cover other</p><p>  businesses.</p><h4>3. Your data stays yours \u2014 and stays on your device</h4><ul><li>The current versions of our apps run <b>entirely on your device</b>. They have</li></ul><p>  no accounts, no sign-in, no analytics, and they collect, transmit, and store</p><p>  <b>none</b> of your information on any server. We never see your data.</p><ul><li>Your records are stored in your browser/app storage on your device. **You</li></ul><p>  are responsible for backing them up** using the app's export tools. If you</p><p>  clear your browser data, lose your device, or uninstall the app, your</p><p>  records may be permanently lost, and we cannot recover them \u2014 we never had</p><p>  a copy.</p><ul><li>Files you export (backups, quotes, PDFs) are under your control. Where you</li></ul><p>  store or send them is up to you.</p><h4>4. Estimates are tools, not guarantees</h4><p>Every number our apps produce \u2014 bids, prices, costs, calorie targets,</p><p>projections, schedules, totals \u2014 is an **estimate generated from the</p><p>information you enter and the settings you choose**. Outputs are aids for</p><p>your own judgment, not guarantees of price, profit, outcome, or result. You</p><p>are responsible for checking any output before relying on it (see also the</p><p>disclaimer that applies to your app: Health Disclaimer for fitness/nutrition</p><p>apps, Estimator Disclaimer for contractor tools). If an input is wrong, the</p><p>output will be wrong.</p><h4>5. Acceptable use</h4><p>Don't use the apps to break the law, infringe anyone's rights, or</p><p>misrepresent quotes, invoices, or records to your own customers. For the</p><p>fitness apps, the guardrails in the app (healthy-rate limits, calorie floor)</p><p>are part of the product \u2014 don't treat the app as a way around them.</p><h4>6. Provided \"as is\"</h4><p>The apps are provided **\"as is\" and \"as available,\" without warranties of</p><p>any kind**, express or implied \u2014 including merchantability, fitness for a</p><p>particular purpose, accuracy of calculations, and uninterrupted or</p><p>error-free operation \u2014 to the maximum extent allowed by law. Software has</p><p>bugs; browsers change; we work to fix problems but do not promise any app is</p><p>error-free or will work on every device or browser forever.</p><h4>7. Limitation of liability</h4><p>To the maximum extent allowed by law:</p><ul><li>We are **not liable for indirect, incidental, special, or consequential</li></ul><p>  damages** \u2014 including lost profits, lost or mispriced jobs, lost data, or</p><p>  business interruption \u2014 arising from use of the apps.</p><ul><li>Our total liability for any claim connected to an app is limited to the</li></ul><p>  <b>amount you paid for that app</b>.</p><ul><li>Nothing in these terms limits liability that cannot legally be limited.</li></ul><h4>8. Refunds</h4><p>Refunds are handled **by the storefront you bought from, under that</p><p>storefront's policy** \u2014 Gumroad's refund policy for Gumroad purchases, and</p><p>Google Play's refund policy for Play purchases. These terms do not add to,</p><p>replace, or override the storefront's refund rules. If a file is defective</p><p>and won't open, contact us at whitewolfoklahoma@gmail.com and we'll fix or</p><p>replace the file.</p><h4>9. Updates and changes to these terms</h4><ul><li>We may release updated versions of an app. Updates may add, change, or</li></ul><p>  remove features.</p><ul><li>We may update these terms. The version you agreed to is recorded in the</li></ul><p>  app (version number and date) at first-run acceptance. If terms change,</p><p>  the app may ask you to accept the new version once on next open. Updated</p><p>  terms apply going forward, not retroactively.</p><ul><li>If you don't agree to an updated version of the terms, stop using the app.</li></ul><h4>10. Governing law</h4><p>These terms are governed by the laws of the <b>State of Oklahoma</b>, USA.</p><p>(Attorney to confirm governing law and venue before publication.)</p><h4>11. Contact</h4><p>White Wolf Tree Service LLC (White Wolf Digital) \u2014</p><p>whitewolfoklahoma@gmail.com.</p><h4>CONNECTED FEATURES \u2014 takes effect only when these features ship</h4><p>*The sections below apply only to future connected features (device sync via</p><p>Health Connect, AI voice logging, and the AI Goal Preview in ForgeFit). They</p><p>do not apply to the current offline versions, which never transmit data.*</p><ul><li><b>Opt-in only.</b> Connected features are off by default. Each one asks for</li></ul><p>  your separate, explicit consent \u2014 on its own consent screen, in plain</p><p>  language \u2014 before anything leaves your device. Declining never disables</p><p>  the app's offline features.</p><ul><li><b>What gets sent.</b> Only what the consent screen names, only when you use</li></ul><p>  the feature: for example, a meal description (text, or audio only if cloud</p><p>  transcription is on) for AI voice logging, or the single photo you choose</p><p>  for an AI Goal Preview.</p><ul><li><b>No retention by us.</b> Our relay service passes your request to the named</li></ul><p>  AI provider and keeps nothing \u2014 no copies of your photos, audio,</p><p>  transcripts, or entries are stored on our servers. Provider handling is</p><p>  described on the consent screen and in the Privacy Policy.</p><ul><li><b>Health data stays on the device.</b> Device sync (Health Connect) reads</li></ul><p>  your health data on your phone and stores it in the app on your phone. It</p><p>  is not uploaded to us.</p><ul><li><b>Allowances.</b> Some connected features run on third-party AI services we</li></ul><p>  pay for per use, so they may include a monthly allowance described in the</p><p>  app (for example, a set number of AI previews or voice entries per month),</p><p>  with optional additional credits. Allowances and pricing will be shown in</p><p>  the app before you use the feature; they are not a subscription unless the</p><p>  app says so in plain words.</p><ul><li><b>Permissions.</b> Connected features may request device permissions (such</li></ul><p>  as Health Connect access or the microphone) at the moment you first use</p><p>  them. You can revoke permissions any time in your device settings; the</p><p>  related feature will simply stop working.</p>";
+var LEGAL_DISCLAIMER_HTML = "<h3>Estimator Disclaimer \u2014 Contractor &amp; Trade Tools</h3><p>**Applies to: TreeBid Pro, SnowBid, WashPrice Pro, RoofSquares, JobProfit</p><p>Tracker, FieldForms Toolkit, PaintPro, FenceDeck, MarketMaker, and the other</p><p>estimating/pricing tools sold under White Wolf Digital \u2014 including bundles</p><p>that contain them.**</p><h4>Estimating aids, not finished quotes</h4><ul><li>These apps are <b>estimating and record-keeping aids</b>. Every bid, price,</li></ul><p>  cost, measurement, and total they produce is an **estimate based on the</p><p>  information and rates you enter**.</p><ul><li>**You \u2014 the business owner \u2014 are responsible for verifying everything</li></ul><p>  before you quote a customer:** measurements and quantities, site</p><p>  conditions, your current material and labor costs, your rates and margins,</p><p>  taxes, permit and license requirements, disposal rules, and any contract</p><p>  terms.</p><ul><li>Default rates, presets, and sample data included in the apps are starting</li></ul><p>  points only. They are not market prices, not industry standards, and not</p><p>  a recommendation of what you should charge.</p><ul><li>A saved quote keeps the prices in effect when you created it (price</li></ul><p>  snapshot). Changing your presets later does not change saved quotes \u2014</p><p>  and a saved quote is still your responsibility to review before sending.</p><h4>Specific tools</h4><ul><li><b>TreeBid Pro:</b> tree work is dangerous and site-specific. Difficulty</li></ul><p>  factors and presets cannot see the actual tree, lean, rot, targets, or</p><p>  access. Inspect every job in person before final pricing. The \"Invoice</p><p>  with Wave\" feature is an open-and-paste handoff \u2014 TreeBid does not</p><p>  connect to Wave, and the invoice you send from Wave is yours.</p><ul><li><b>RoofSquares / measurement tools:</b> confirm roof measurements and pitch</li></ul><p>  in person or by your usual method before ordering materials.</p><ul><li><b>SnowBid / seasonal tools:</b> route times, snowfall amounts, and service</li></ul><p>  pricing vary by storm and site; seasonal contracts are your agreement</p><p>  with your customer, on your terms.</p><ul><li><b>JobProfit Tracker:</b> profit figures depend on the costs you enter.</li></ul><p>  The app is not accounting or tax software and does not replace your</p><p>  bookkeeper or accountant.</p><h4>Bottom line</h4><p>If an output and your judgment disagree, trust your judgment \u2014 then fix the</p><p>input. We are not responsible for jobs won, lost, or mispriced based on app</p><p>outputs, within the limits of the Terms of Use.</p>";
+(function(){
+  var lst = document.createElement("style");
+  lst.textContent = "@media print{ #legalOverlay{ display:none !important; } }";
+  document.head.appendChild(lst);
+})();
+function sanitizeLegal(v){
+  if(!v || typeof v !== "object") return null;
+  if(typeof v.termsVersion !== "string" || typeof v.acceptedDate !== "string") return null;
+  return { termsVersion: v.termsVersion.slice(0, 10), acceptedDate: v.acceptedDate.slice(0, 40), disclaimerShown: !!v.disclaimerShown };
+}
+function legalRecord(){
+  try{ var s = state; return (s && s.legal) ? sanitizeLegal(s.legal) : null; }catch(e){ return null; }
+}
+function legalVersionCmp(a, b){
+  var pa = String(a).split("."), pb = String(b).split(".");
+  for(var i = 0; i < 3; i++){ var d = (parseInt(pa[i], 10) || 0) - (parseInt(pb[i], 10) || 0); if(d) return d; }
+  return 0;
+}
+function legalAcceptLine(){
+  var rec = legalRecord();
+  if(rec && rec.acceptedDate) return "You agreed to Terms v" + rec.termsVersion + " on " + rec.acceptedDate.slice(0, 10) + ".";
+  return "No Terms acceptance is recorded on this device yet \u2014 the current Terms will be shown for your agreement.";
+}
+function legalSectionHTML(){
+  var h = '<div style="border-top:2px solid rgba(127,127,127,.35);margin-top:20px;padding-top:14px;">'
+    + '<h2>Legal</h2>'
+    + '<p>' + legalAcceptLine() + '</p>'
+    + '<h3>Terms of Use (v' + TERMS_VERSION + ')</h3>'
+    + '<div style="max-height:340px;overflow-y:auto;border:1px solid rgba(127,127,127,.4);border-radius:8px;padding:10px 14px;font-size:14px;line-height:1.55;">' + LEGAL_TERMS_HTML + '</div>';
+  if(LEGAL_HAS_DISCLAIMER){
+    h += '<h3>Estimator Disclaimer</h3>'
+      + '<div style="max-height:260px;overflow-y:auto;border:1px solid rgba(127,127,127,.4);border-radius:8px;padding:10px 14px;font-size:14px;line-height:1.55;">' + LEGAL_DISCLAIMER_HTML + '</div>';
+  }
+  h += '<h3>Privacy</h3>'
+    + '<p>This app collects no data. It has no accounts, no sign-in, no analytics, and no server \u2014 everything you enter is stored only on this device, in this browser\u2019s storage, and nothing is transmitted anywhere. Files you export (backups, quotes, prints) are under your control. You are responsible for backing up your records with the app\u2019s export tools.</p>'
+    + '<p>Sold by White Wolf Tree Service LLC (White Wolf Digital) \u2014 whitewolfoklahoma@gmail.com</p>'
+    + '</div>';
+  return h;
+}
+function legalFillSection(){
+  var el = document.getElementById("legalSection");
+  if(!el) return;
+  var sig = legalAcceptLine();
+  if(el.getAttribute("data-legal-filled") === sig) return;
+  el.innerHTML = legalSectionHTML(); el.setAttribute("data-legal-filled", sig);
+}
+function legalRefreshSection(){
+  var el = document.getElementById("legalSection");
+  if(el){ el.innerHTML = legalSectionHTML(); el.setAttribute("data-legal-filled", legalAcceptLine()); }
+}
+function legalShowOverlay(isUpdate){
+  if(document.getElementById("legalOverlay")) return;
+  var ov = document.createElement("div");
+  ov.id = "legalOverlay";
+  ov.setAttribute("style", "position:fixed;inset:0;z-index:99999;background:rgba(8,10,14,.74);overflow-y:auto;padding:20px 12px;display:flex;align-items:flex-start;justify-content:center;");
+  var discBtn = LEGAL_HAS_DISCLAIMER ? '<button type="button" id="legalReadDisc" style="min-height:44px;padding:10px 14px;border-radius:10px;border:1px solid #9aa4b2;background:#ffffff;color:#1c2733;font-size:15px;cursor:pointer;">Read the Estimator Disclaimer</button>' : '';
+  var checkLabel = LEGAL_HAS_DISCLAIMER ? "I have read the disclaimer and I agree to the Terms of Use" : "I have read and I agree to the Terms of Use";
+  ov.innerHTML = '<div style="background:#ffffff;color:#1c2733;max-width:560px;width:100%;border-radius:14px;padding:22px 20px;box-shadow:0 18px 50px rgba(0,0,0,.45);font-size:15px;line-height:1.55;">'
+    + '<h2 style="margin:0 0 6px;font-size:21px;">' + LEGAL_APP_NAME + ' \u2014 Terms of Use</h2>'
+    + (isUpdate ? '<p style="background:#fdf3d7;border:1px solid #e4cf8a;border-radius:8px;padding:8px 10px;"><b>Our terms were updated (v' + TERMS_VERSION + ').</b></p>' : '')
+    + '<p style="font-size:16px;"><b>Your data stays on your device.</b><br><b>Estimates are aids, not guarantees.</b><br><b>You\'re responsible for checking outputs before you rely on them.</b></p>'
+    + '<p>The full Terms' + (LEGAL_HAS_DISCLAIMER ? ' and Disclaimer are' : ' are') + ' one tap away, now and any time in Settings \u2192 Legal.</p>'
+    + '<div id="legalReader" style="display:none;max-height:44vh;overflow-y:auto;border:1px solid #d5dbe3;border-radius:10px;padding:10px 14px;margin:10px 0;font-size:14px;"></div>'
+    + '<p style="display:flex;gap:8px;flex-wrap:wrap;"><button type="button" id="legalReadTerms" style="min-height:44px;padding:10px 14px;border-radius:10px;border:1px solid #9aa4b2;background:#ffffff;color:#1c2733;font-size:15px;cursor:pointer;">Read the full Terms</button>' + discBtn + '</p>'
+    + '<label style="display:flex;gap:10px;align-items:flex-start;margin:12px 0;cursor:pointer;"><input type="checkbox" id="legalCheck" style="width:22px;height:22px;min-width:22px;margin-top:1px;cursor:pointer;"><span>' + checkLabel + '</span></label>'
+    + '<button type="button" id="legalAgree" disabled style="min-height:52px;width:100%;border:0;border-radius:10px;background:#1f5fa8;color:#ffffff;font-size:17px;font-weight:700;cursor:pointer;opacity:.55;">I Agree</button>'
+    + '<p style="font-size:13px;color:#5a6675;margin-bottom:0;">Your records stay loaded behind this screen and are never deleted or locked, whether or not you agree now.</p>'
+    + '</div>';
+  document.body.appendChild(ov);
+  var reader = ov.querySelector("#legalReader");
+  var showing = "";
+  function toggleReader(kind){
+    if(showing === kind){ reader.style.display = "none"; showing = ""; return; }
+    reader.innerHTML = kind === "terms" ? LEGAL_TERMS_HTML : LEGAL_DISCLAIMER_HTML;
+    reader.style.display = "block"; showing = kind;
+    reader.scrollTop = 0;
+  }
+  ov.querySelector("#legalReadTerms").addEventListener("click", function(){ toggleReader("terms"); });
+  var db = ov.querySelector("#legalReadDisc");
+  if(db) db.addEventListener("click", function(){ toggleReader("disc"); });
+  var legalChk = ov.querySelector("#legalCheck");
+  var legalAgreeBtn = ov.querySelector("#legalAgree");
+  legalChk.addEventListener("change", function(){ legalAgreeBtn.disabled = !legalChk.checked; legalAgreeBtn.style.opacity = legalChk.checked ? "1" : ".55"; });
+  legalAgreeBtn.addEventListener("click", function(){
+    if(!legalChk.checked) return;
+    try{ state.legal = { termsVersion: TERMS_VERSION, acceptedDate: new Date().toISOString(), disclaimerShown: LEGAL_HAS_DISCLAIMER }; save(); }catch(e){}
+    if(ov.parentNode) ov.parentNode.removeChild(ov);
+    legalRefreshSection();
+  });
+}
+function legalInit(){
+  legalFillSection();
+  var rec = legalRecord();
+  if(rec && legalVersionCmp(rec.termsVersion, TERMS_VERSION) >= 0) return;
+  legalShowOverlay(!!rec);
+}
+if(typeof MutationObserver !== "undefined"){
+  var legalObs = new MutationObserver(function(){ legalFillSection(); });
+  legalObs.observe(document.documentElement, { childList: true, subtree: true });
+}
+if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", function(){ setTimeout(legalInit, 30); });
+else setTimeout(legalInit, 30);
+
+</script>
+</body>
+</html>
